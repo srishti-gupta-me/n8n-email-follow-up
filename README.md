@@ -2,7 +2,7 @@
 Automated workflow for tracking and managing email follow-ups during job search. Uses n8n hosted on AWS to monitor outreach emails and send reminders when it's time to follow up.
 
 ## Features
-- Tracks emails labeled 'Initial Outreach' and 'F-1 Sent'
+- Tracks emails labeled 'Initial Outreach' and 'Follow-Up 1 Sent'
 - Calculates business days (excludes weekends and Fridays)
 - Filters out emails that received responses
 - Sends email notifications if any follow-ups are needed
