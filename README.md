@@ -105,13 +105,6 @@ Helpful Videos:
 6. Approve label change to 'Follow-up 1 Sent'
 7. System tracks for final follow-up
 
-## Why This Approach?
-
-- **Drafts over auto-send:** Maintains personal voice and control 
-- **Gmail threading:** Keeps conversations organized
-- **Business day logic:** Respects professional communication norms
-- **Response filtering:** Automatically excludes emails that got replies
-
 ## Cost
 
 - AWS: Free tier (750 hours during 1st year)
