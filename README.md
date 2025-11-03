@@ -1,10 +1,6 @@
 # n8n-email-follow-up
 Timely follow-up is critical. This workflow takes the mental toll of tracking when to follow-up and what emails to follow-up. 
 
-Perfect! Let me merge your authentic writing with the technical sections. Here's the complete blog:
-
----
-
 # Automating Recruiter Follow-ups: Building a Smart Email System with n8n
 
 ## The Problem
