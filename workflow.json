@@ -1,0 +1,1529 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "733b9443-2069-43b3-a064-e9de591bf422",
+              "leftValue": "={{ $json.labels[0].id }}",
+              "rightValue": "SENT",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -912,
+        -128
+      ],
+      "id": "b19e475f-9fa9-4425-b5f0-25fb64998f64",
+      "name": "Sent Emails"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1876d518-2e78-495d-b4cc-f69cb61ecff9",
+              "leftValue": "={{ $json.labels.some(label => label.id === 'INBOX') }}",
+              "rightValue": "INBOX",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -912,
+        352
+      ],
+      "id": "8ab76594-852d-49d0-bd0e-47f81ed204a5",
+      "name": "Response Recieved",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "removeLabels",
+        "threadId": "={{ $json.threadId }}",
+        "labelIds": [
+          "Label_857469083990893075",
+          "Label_3949034745543236434",
+          "Label_4300366711186213828"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1888,
+        336
+      ],
+      "id": "4000bd50-afac-4074-855a-22fb037fea17",
+      "name": "Remove label from thread",
+      "webhookId": "11819cf3-a7bc-4186-a22a-17d6c77b7ede",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "addLabels",
+        "threadId": "={{ $json.messages[0].threadId }}",
+        "labelIds": [
+          "Label_7068335720954925353"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2096,
+        336
+      ],
+      "id": "5d319fa5-3734-407c-b7e1-a5899fa08e10",
+      "name": "Response Received",
+      "webhookId": "d90d1b8d-d31d-485f-8e16-859b4ae9492c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "addLabels",
+        "threadId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_4300366711186213828"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2160,
+        -160
+      ],
+      "id": "a97179ca-cbca-4d6e-9118-3027c0d712a0",
+      "name": "F-1 Sent",
+      "webhookId": "de06cd74-8b16-4e71-a357-70fae18df314",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "labelIds": [
+            "Label_857469083990893075"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1184,
+        80
+      ],
+      "id": "d0640746-785e-4b07-aea2-deec2c392ca2",
+      "name": "Initial Outreach Messages",
+      "webhookId": "9d07223d-0873-4bd7-944c-7a6eb413ec49",
+      "notesInFlow": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "removeLabels",
+        "threadId": "={{ $json.threadId }}",
+        "labelIds": [
+          "Label_3949034745543236434",
+          "Label_7496845342525712860",
+          "Label_857469083990893075"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1952,
+        -160
+      ],
+      "id": "96b48566-85ef-4c29-a84e-e56568b27607",
+      "name": "Remove F-1 Await",
+      "webhookId": "11819cf3-a7bc-4186-a22a-17d6c77b7ede",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "field": "id"
+            }
+          ]
+        },
+        "fieldsToSplitBy": "threadId",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        1456,
+        -144
+      ],
+      "id": "7f622c88-828e-40a4-a46b-77c70642c587",
+      "name": "Summarize"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "733b9443-2069-43b3-a064-e9de591bf422",
+              "leftValue": "={{ $json.labels[0].id }}",
+              "rightValue": "SENT",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1216,
+        -144
+      ],
+      "id": "f01c6b27-21aa-4da4-86a1-31182f6f7968",
+      "name": "Remove any email that has received response"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "611155e1-dc15-40e4-bf25-29c66499c6b5",
+              "leftValue": "={{ $json.count_id }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1664,
+        -144
+      ],
+      "id": "54dc5230-63a5-4aab-979c-283d03795495",
+      "name": "If4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1616,
+        336
+      ],
+      "id": "a175bb13-eb4c-439e-a7c3-b2d824628c0b",
+      "name": "Merge1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "733b9443-2069-43b3-a064-e9de591bf422",
+              "leftValue": "={{ $json.labels[0].id }}",
+              "rightValue": "INBOX",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        128
+      ],
+      "id": "11074c33-091b-41ce-bce5-2960935168bf",
+      "name": "Remove any email that has received response1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "733b9443-2069-43b3-a064-e9de591bf422",
+              "leftValue": "={{ $json.labels[0].id }}",
+              "rightValue": "SENT",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -912,
+        800
+      ],
+      "id": "395862f5-f092-42a9-bfb2-af3cb4523f59",
+      "name": "Sent Emails1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1876d518-2e78-495d-b4cc-f69cb61ecff9",
+              "leftValue": "={{ $json.labels.some(label => label.id === 'INBOX') }}",
+              "rightValue": "INBOX",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -912,
+        1280
+      ],
+      "id": "00289afa-ac13-46e2-8bb3-d4b16afd2e0c",
+      "name": "Response Recieved1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "threadId",
+        "joinMode": "keepNonMatches",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -576,
+        816
+      ],
+      "id": "c1aede2d-059b-4a5c-946a-5e2bd59354ab",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "removeLabels",
+        "threadId": "={{ $json.threadId }}",
+        "labelIds": [
+          "Label_857469083990893075",
+          "Label_3949034745543236434",
+          "Label_4300366711186213828",
+          "Label_902629139508722508",
+          "Label_7496845342525712860"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -160,
+        1280
+      ],
+      "id": "f97aa28a-5969-480c-b8cc-6bf55878291c",
+      "name": "Remove label from thread1",
+      "webhookId": "11819cf3-a7bc-4186-a22a-17d6c77b7ede",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "addLabels",
+        "threadId": "={{ $json.messages[0].threadId }}",
+        "labelIds": [
+          "Label_7068335720954925353"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        112,
+        1280
+      ],
+      "id": "9499635e-7bc6-4f17-b566-4dac1f4362e5",
+      "name": "Response Received1",
+      "webhookId": "d90d1b8d-d31d-485f-8e16-859b4ae9492c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field\nfor (const item of $input.all()) {\n  const sendDate = new Date(parseInt(item.json.internalDate));\n  const today = new Date();\n  \n  // Check if today is Friday\n  const isFriday = today.getDay() === 5;\n  \n  // Count business days\n  let businessDaysElapsed = 0;\n  let current = new Date(sendDate);\n  \n  while (current < today) {\n    const dayOfWeek = current.getDay();\n    // Skip weekends (0 = Sunday, 6 = Saturday)\n    if (dayOfWeek !== 0 && dayOfWeek !== 6) {\n      businessDaysElapsed++;\n    }\n    current.setDate(current.getDate() + 1);\n  }\n  \n  // Check if 3+ business days have passed AND today is not Friday\n  item.json.shouldSendEmail = businessDaysElapsed >= 5 && !isFriday;\n  item.json.businessDaysElapsed = businessDaysElapsed;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        816
+      ],
+      "id": "b7ca5a18-8c2b-4b78-b3cd-5b84b9c7b98b",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "srishti5991gupta@gmail.com",
+        "subject": "Send 2nd Follow-Ups",
+        "message": "This request allows to change labels.",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        496,
+        800
+      ],
+      "id": "c494a94f-db4b-44ea-b0d0-cfeded5176a0",
+      "name": "Send message and wait for response1",
+      "webhookId": "80bfc2fd-06cb-47aa-9695-0cd9e492228e",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "field": "id"
+            }
+          ]
+        },
+        "fieldsToSplitBy": "threadId",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        1616,
+        784
+      ],
+      "id": "8d0c27e8-40c0-4067-90b3-7227bbb69d06",
+      "name": "Summarize1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "733b9443-2069-43b3-a064-e9de591bf422",
+              "leftValue": "={{ $json.labels[0].id }}",
+              "rightValue": "SENT",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1408,
+        784
+      ],
+      "id": "e0f25356-1849-4e7c-9175-89b4617079be",
+      "name": "Remove any email that has received response2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "611155e1-dc15-40e4-bf25-29c66499c6b5",
+              "leftValue": "={{ $json.count_id }}",
+              "rightValue": 2,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1776,
+        784
+      ],
+      "id": "0b486c3d-a465-4b30-87ee-eb31616b18c8",
+      "name": "If5"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "labelIds": [
+            "Label_7496845342525712860",
+            "Label_4300366711186213828"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1184,
+        1008
+      ],
+      "id": "7548a1d9-51a7-47c4-aff4-d8b56adff59b",
+      "name": "Fetch F-1 Sent",
+      "webhookId": "9d07223d-0873-4bd7-944c-7a6eb413ec49",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "addLabels",
+        "threadId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_902629139508722508"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2224,
+        768
+      ],
+      "id": "b6388be0-7513-4ec3-aaf8-60bf88511f06",
+      "name": "F-2 Sent",
+      "webhookId": "de06cd74-8b16-4e71-a357-70fae18df314",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "removeLabels",
+        "threadId": "={{ $json.threadId }}",
+        "labelIds": [
+          "Label_7496845342525712860"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2032,
+        768
+      ],
+      "id": "b42dff93-94c3-406f-a64a-0fa527df96e2",
+      "name": "Remove F-2 Await",
+      "webhookId": "11819cf3-a7bc-4186-a22a-17d6c77b7ede",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "labelIds": [
+            "Label_7496845342525712860"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1184,
+        784
+      ],
+      "id": "207ffed5-40a1-4163-9c33-a00307e08216",
+      "name": "Fetch F-2 Await",
+      "webhookId": "9d07223d-0873-4bd7-944c-7a6eb413ec49",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "addLabels",
+        "threadId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_7496845342525712860"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        304,
+        800
+      ],
+      "id": "2a122ece-e885-46c2-8f61-331678a32928",
+      "name": "Label: F-2 Await",
+      "webhookId": "de06cd74-8b16-4e71-a357-70fae18df314",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "removeLabels",
+        "threadId": "={{ $json.threadId }}",
+        "labelIds": [
+          "Label_4300366711186213828"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        96,
+        800
+      ],
+      "id": "d5c5a3dd-b6b4-4c23-af0d-166daf8405b9",
+      "name": "Remove F-1 Sent",
+      "webhookId": "11819cf3-a7bc-4186-a22a-17d6c77b7ede",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        464,
+        -128
+      ],
+      "id": "ea43f189-97a5-4105-b8fb-eabb7b5d7416",
+      "name": "Wait",
+      "webhookId": "a8e64e37-aaeb-4c14-8513-068e6e55730f"
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        800
+      ],
+      "id": "21f8eb0f-ae20-456c-a3d5-9a53a2e78451",
+      "name": "Wait1",
+      "webhookId": "a8e64e37-aaeb-4c14-8513-068e6e55730f"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8,
+              "triggerAtMinute": 45
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1440,
+        1008
+      ],
+      "id": "0b526816-dac2-4405-82d8-ef351da9bde9",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1440,
+        80
+      ],
+      "id": "b13b9286-20e6-458f-85df-af01e0b2abca",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1c253f67-53bb-4002-9846-0639bbe829d5",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        656,
+        -128
+      ],
+      "id": "52fc2841-0493-4134-8c08-3d9eb3ec9eae",
+      "name": "Label change request approved?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1c253f67-53bb-4002-9846-0639bbe829d5",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        800
+      ],
+      "id": "efa96bf2-dd71-4111-bc5e-45392e740c79",
+      "name": "Label change request approved?1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a61c3b26-78d8-4b11-adb3-7a2056972fa0",
+              "leftValue": "={{ $json.shouldSendEmail }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -144,
+        -112
+      ],
+      "id": "f517c312-334c-46e6-9c7a-2a4c8b9398d3",
+      "name": "Time for first follow-up?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a61c3b26-78d8-4b11-adb3-7a2056972fa0",
+              "leftValue": "={{ $json.shouldSendEmail }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        816
+      ],
+      "id": "4adbf530-6dea-452d-a9f3-ab63cb39984e",
+      "name": "Time for final follow-up?"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "threadId",
+        "joinMode": "keepNonMatches",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -576,
+        -112
+      ],
+      "id": "017ab17c-d17b-4d7e-8bbc-af27129ca6ab",
+      "name": "Keep emails with no response"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field\nfor (const item of $input.all()) {\n  const sendDate = new Date(parseInt(item.json.internalDate));\n  const today = new Date();\n  \n  // Check if today is Friday\n  const isFriday = today.getDay() === 5;\n  \n  // Count business days\n  let businessDaysElapsed = 0;\n  let current = new Date(sendDate);\n  \n  while (current < today) {\n    const dayOfWeek = current.getDay();\n    // Skip weekends (0 = Sunday, 6 = Saturday)\n    if (dayOfWeek !== 0 && dayOfWeek !== 6) {\n      businessDaysElapsed++;\n    }\n    current.setDate(current.getDate() + 1);\n  }\n  \n  // Check if 3+ business days have passed AND today is not Friday\n  item.json.shouldSendEmail = businessDaysElapsed >= 3 && !isFriday;\n  item.json.businessDaysElapsed = businessDaysElapsed;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        -112
+      ],
+      "id": "bc9a9cb5-8337-4985-b0d7-f737eb58e13e",
+      "name": "Business days since sent date"
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "addLabels",
+        "threadId": "={{ $json.threadId }}",
+        "labelIds": [
+          "Label_3949034745543236434"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        64,
+        -128
+      ],
+      "id": "d165d2e4-4884-4658-ba43-b61cdaca3f60",
+      "name": "Change Label to: F-1 Await",
+      "webhookId": "de06cd74-8b16-4e71-a357-70fae18df314",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "srishti5991gupta@gmail.com",
+        "subject": "Send 1st Follow-Ups",
+        "message": "This request allows to change labels.",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        272,
+        -128
+      ],
+      "id": "357e1827-9bba-4401-ae67-b6237dcc759d",
+      "name": "Notify and wait for response",
+      "webhookId": "80bfc2fd-06cb-47aa-9695-0cd9e492228e",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "labelIds": [
+            "Label_3949034745543236434"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        896,
+        -144
+      ],
+      "id": "20676c58-2d2a-410a-b7c1-65e351011f85",
+      "name": "Fetch F-1 Await Threads",
+      "webhookId": "9d07223d-0873-4bd7-944c-7a6eb413ec49",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2PXNm7rx0riwP4iW",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Sent Emails": {
+      "main": [
+        [
+          {
+            "node": "Keep emails with no response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Response Recieved": {
+      "main": [
+        [
+          {
+            "node": "Keep emails with no response",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Remove label from thread": {
+      "main": [
+        [
+          {
+            "node": "Response Received",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initial Outreach Messages": {
+      "main": [
+        [
+          {
+            "node": "Sent Emails",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Response Recieved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove F-1 Await": {
+      "main": [
+        [
+          {
+            "node": "F-1 Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove any email that has received response": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Remove F-1 Await",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Remove label from thread",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove any email that has received response1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sent Emails1": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Response Recieved1": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Remove label from thread1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove label from thread1": {
+      "main": [
+        [
+          {
+            "node": "Response Received1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Time for final follow-up?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response1": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize1": {
+      "main": [
+        [
+          {
+            "node": "If5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove any email that has received response2": {
+      "main": [
+        [
+          {
+            "node": "Summarize1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [
+          {
+            "node": "Remove F-2 Await",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch F-1 Sent": {
+      "main": [
+        [
+          {
+            "node": "Sent Emails1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Response Recieved1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove F-2 Await": {
+      "main": [
+        [
+          {
+            "node": "F-2 Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch F-2 Await": {
+      "main": [
+        [
+          {
+            "node": "Remove any email that has received response2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Label: F-2 Await": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove F-1 Sent": {
+      "main": [
+        [
+          {
+            "node": "Label: F-2 Await",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Label change request approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "F-1 Sent": {
+      "main": [
+        []
+      ]
+    },
+    "Response Received": {
+      "main": [
+        []
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Label change request approved?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Fetch F-1 Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Initial Outreach Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Label change request approved?": {
+      "main": [
+        [
+          {
+            "node": "Fetch F-1 Await Threads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Label change request approved?1": {
+      "main": [
+        [
+          {
+            "node": "Fetch F-2 Await",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Time for first follow-up?": {
+      "main": [
+        [
+          {
+            "node": "Change Label to: F-1 Await",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Time for final follow-up?": {
+      "main": [
+        [
+          {
+            "node": "Remove F-1 Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Keep emails with no response": {
+      "main": [
+        [
+          {
+            "node": "Business days since sent date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Business days since sent date": {
+      "main": [
+        [
+          {
+            "node": "Time for first follow-up?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Change Label to: F-1 Await": {
+      "main": [
+        [
+          {
+            "node": "Notify and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify and wait for response": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch F-1 Await Threads": {
+      "main": [
+        [
+          {
+            "node": "Remove any email that has received response",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Remove any email that has received response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c937a0d5-7cfb-4aba-bb41-cc23464a7553",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e6315398e3b150b13f790c6cc689ec858f35cb79ca276c0d5ae5a4ea899e01c9"
+  },
+  "id": "5ShohME9PFu0BZ0V",
+  "tags": []
+}
